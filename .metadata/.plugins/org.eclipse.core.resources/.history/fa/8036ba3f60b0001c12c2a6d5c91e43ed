@@ -34,8 +34,7 @@ public class MainMenuController implements Initializable {
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if(currentOrder == null)
-			currentOrder = new Order(OrderNumbers.getOrderNumber());
+		currentOrder = new Order(OrderNumbers.getOrderNumber());
 		
 	}
 }

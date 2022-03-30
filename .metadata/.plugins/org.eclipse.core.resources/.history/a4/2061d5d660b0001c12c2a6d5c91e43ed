@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orders.Order;
 
 public class donutsSceneController implements Initializable{
 	@FXML
@@ -37,6 +38,7 @@ public class donutsSceneController implements Initializable{
 	@FXML
 	private ListView<ComboBox<String>> donutOrdersListView;
 	private String printAreaString;
+	private Order donutOrders;
 	private final String[] donutTypes = {"Yeast Donut","Cake Donut","Donut Holes"};
 	private static String[] donutFlavors = {"Glazed", "Old Fassioned", "Jelly", "Blueberry", "Chocloate Frosted",
 				"Boston Creme", "Chocolate Glazed", "Butter Nut", "Chocolate Creme", "French Cruller", "Double Chocolate",
@@ -47,6 +49,7 @@ public class donutsSceneController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		donutTypesComboBox.getItems().addAll(donutTypes);
+		this.donutOrders = new Order(-1);
 		if(flavorsOfTheDay == null) {
 			flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
 		}

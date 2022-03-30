@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orders.Order;
 
 public class donutsSceneController implements Initializable{
 	@FXML
@@ -47,6 +48,7 @@ public class donutsSceneController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		donutTypesComboBox.getItems().addAll(donutTypes);
+		this.donutOrders = new Order(-1);
 		if(flavorsOfTheDay == null) {
 			flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
 		}

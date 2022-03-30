@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orders.Order;
 
 public class donutsSceneController implements Initializable{
 	@FXML
@@ -37,6 +38,7 @@ public class donutsSceneController implements Initializable{
 	@FXML
 	private ListView<ComboBox<String>> donutOrdersListView;
 	private String printAreaString;
+	private Order donutOrders;
 	private final String[] donutTypes = {"Yeast Donut","Cake Donut","Donut Holes"};
 	private static String[] donutFlavors = {"Glazed", "Old Fassioned", "Jelly", "Blueberry", "Chocloate Frosted",
 				"Boston Creme", "Chocolate Glazed", "Butter Nut", "Chocolate Creme", "French Cruller", "Double Chocolate",
@@ -47,12 +49,12 @@ public class donutsSceneController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		donutTypesComboBox.getItems().addAll(donutTypes);
+		this.donutOrders = new Order(-1);
 		if(flavorsOfTheDay == null) {
 			flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
 		}
 		donutFlavorComboBox.getItems().addAll(flavorsOfTheDay);
 		printArea.setStyle("-fx-text-fill: green ;");
-		addToListView();
 	}
 	public void swapToMainMenuScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
@@ -68,13 +70,13 @@ public class donutsSceneController implements Initializable{
 		}
 		switch(type){
 			case "Yeast Donut":
-				MainMenuController.currentOrder.add(new Donut(DonutPrices.YEAST.name,flavor,DonutPrices.YEAST.price,this.amount));
+				donutOrders.add(new Donut(DonutPrices.YEAST.name,flavor,DonutPrices.YEAST.price,this.amount));
 				break;
 			case "Cake Donut":
-				MainMenuController.currentOrder.add(new Donut(DonutPrices.CAKE.name,flavor,DonutPrices.CAKE.price,this.amount));
+				donutOrders.add(new Donut(DonutPrices.CAKE.name,flavor,DonutPrices.CAKE.price,this.amount));
 				break;
 			case "Donut Holes":
-				MainMenuController.currentOrder.add(new Donut(DonutPrices.HOLE.name,flavor,DonutPrices.HOLE.price,this.amount));
+				donutOrders.add(new Donut(DonutPrices.HOLE.name,flavor,DonutPrices.HOLE.price,this.amount));
 				break;
 			default:
 				printArea.setStyle("-fx-text-fill: red ;");
@@ -84,6 +86,7 @@ public class donutsSceneController implements Initializable{
 		}
 		printArea.setStyle("-fx-text-fill: green ;");
 		printArea.setText("Order added to cart");
+		addToMainCart();
 		addToListView();
 		reset();
 	}
@@ -92,25 +95,27 @@ public class donutsSceneController implements Initializable{
 		this.donutTypesComboBox.valueProperty().set(null);
 		this.donutFlavorComboBox.valueProperty().set(null);
 	}
+	public void addToMainCart() {
+		for(MenuItem e : donutOrders.orderList) {
+			MainMenuController.currentOrder.add(e);
+		}
+	}
 	public void addToListView() {
 		donutOrdersListView.getItems().clear();
 		double subTotal = 0;
-		for(MenuItem e : MainMenuController.currentOrder.orderList) {
-			if(!(e instanceof Donut)) {
-				continue;
-			}
+		for(MenuItem e : donutOrders.orderList) {
 			ComboBox<String> temp = new ComboBox<String>();
 			temp.setPromptText(e.toString());
 			temp.getItems().addAll(options);
 			temp.setOnAction(event -> {
 				if(temp.getValue().equals("Edit Order")) {
-					MainMenuController.currentOrder.remove(e);
+					donutOrders.remove(e);
 					setEdit(e.itemName,e.itemType,e.amount);
 					addToListView();
 					
 				}
 				if(temp.getValue().equals("Remove Order")) {
-					MainMenuController.currentOrder.remove(e);
+					donutOrders.remove(e);
 		    		addToListView();	
 				}
 			});
