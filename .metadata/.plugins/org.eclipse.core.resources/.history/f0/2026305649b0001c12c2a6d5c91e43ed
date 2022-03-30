@@ -1,0 +1,13 @@
+package donut;
+
+public enum DonutPrices {
+	YEAST("Yeast Donut",1.59),
+	CAKE("Cake Donut",1.79),
+	HOLE();
+	public final int price;
+	public final String name;
+	private DonutPrices(String name,int price) {
+		this.name = name;
+		this.price = price;
+	}
+}

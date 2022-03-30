@@ -1,0 +1,8 @@
+package mainMenu;
+
+public abstract class MenuItem {
+	public double price;
+	public  double itemPrice() {
+		return price;
+	}
+}

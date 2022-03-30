@@ -1,0 +1,12 @@
+package orders;
+
+import java.util.ArrayList;
+
+import mainMenu.MenuItem;
+
+public class Order implements Customizable{
+	public int orderNumber;
+	ArrayList<MenuItem>orderList;
+	
+
+}

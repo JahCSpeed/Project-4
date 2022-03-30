@@ -1,0 +1,14 @@
+package mainMenu;
+
+public abstract class MenuItem {
+	public double price;
+	public int amount;
+	public String itemName;
+	public String itemType;
+	public  double itemPrice() {
+		return price;
+	}
+	public int getAmount() {
+		return amount;
+	}
+}

@@ -1,0 +1,30 @@
+package orders;
+
+import java.util.ArrayList;
+
+import mainMenu.MenuItem;
+
+public class Order implements Customizable{
+	public int orderNumber;
+	ArrayList<MenuItem>orderList;
+	@Override
+	public boolean add(Object obj) {
+		listInitilized();
+		if(obj instanceof MenuItem) {
+			orderList.add((MenuItem)obj);
+		}
+		return false;
+	}
+	@Override
+	public boolean remove(Object obj) {
+		listInitilized();
+		return false;
+	}
+	
+	private void listInitilized(){
+		if(this.orderList == null) {
+			this.orderList = new ArrayList<MenuItem>();
+		}
+	}
+
+}

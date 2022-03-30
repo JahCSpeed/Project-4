@@ -1,0 +1,9 @@
+package orders;
+
+public class OrderNumbers {
+	public int number = 0;
+	
+	public static int getOrderNumber() {
+		return ++number;
+	}
+}

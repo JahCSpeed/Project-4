@@ -1,0 +1,8 @@
+package donut;
+
+public enum DonutPrices {
+	public final int price;
+	private DonutPrices(int price) {
+		this.price = price;
+	}
+}

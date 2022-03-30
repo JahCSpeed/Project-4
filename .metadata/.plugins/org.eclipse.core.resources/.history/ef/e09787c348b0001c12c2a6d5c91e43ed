@@ -1,0 +1,10 @@
+package donut;
+
+import mainMenu.MenuItem;
+
+public class Donut extends MenuItem {
+	public Donut() {
+		
+	}
+
+}

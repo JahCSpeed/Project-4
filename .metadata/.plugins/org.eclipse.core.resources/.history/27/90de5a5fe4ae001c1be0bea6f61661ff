@@ -1,0 +1,7 @@
+package sceneController;
+
+public class SceneController {
+	private Stage stage;
+	private Scene newScene;
+	private Pane root;
+}

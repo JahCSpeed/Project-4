@@ -1,0 +1,6 @@
+module cafe {
+	requires javafx.controls;
+	requires javafx.fxml;
+	
+	opens mainMenu to javafx.graphics, javafx.fxml;
+}

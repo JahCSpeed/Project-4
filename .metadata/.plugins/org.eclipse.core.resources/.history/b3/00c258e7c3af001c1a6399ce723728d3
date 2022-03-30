@@ -1,0 +1,30 @@
+package mainMenu;
+
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class MainMenuController {
+	@FXML
+	private Button orderDonutsBtn;
+	@FXML
+	private Button orderCoffeeBtn;
+	@FXML
+	private Button gotoBasketBtn;
+	@FXML
+	private Button gotoStoreOrdersBtn;
+	
+	public void swapToDonutScene(ActionEvent event) throws IOException {
+		FXMLLoader root = FXMLLoader(getClass().getResource("donutsScene.fxml"));
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.setScene(new Scene(root));
+		stage.show();	
+	}
+}

@@ -1,0 +1,5 @@
+package donut;
+
+public enum DonutPrices {
+
+}

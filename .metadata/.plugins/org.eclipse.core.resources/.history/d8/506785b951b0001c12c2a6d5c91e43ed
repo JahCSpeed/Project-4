@@ -1,0 +1,125 @@
+package mainMenu;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.ResourceBundle;
+
+import donut.Donut;
+import donut.DonutPrices;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import orders.Order;
+
+public class donutsSceneController implements Initializable{
+	@FXML
+	public Button backToMain,confirmOrder;
+	@FXML
+	public ComboBox<String> donutTypesComboBox,donutFlavorComboBox;
+	@FXML
+	private TextField amountField;
+	@FXML
+	private TextArea printArea;
+	@FXML
+	private ListView donutOrdersListView;
+	private String printAreaString;
+	private Order donutOrders;
+	private final String[] donutTypes = {"Yeast Donut","Cake Donut","Donut Holes"};
+	private static String[] donutFlavors = {"Glazed", "Old Fassioned", "Jelly", "Blueberry", "Chocloate Frosted",
+				"Boston Creme", "Chocolate Glazed", "Butter Nut", "Chocolate Creme", "French Cruller", "Double Chocolate",
+				"Maple Frosted"};
+	private static ArrayList<String> flavorsOfTheDay;
+	private int amount;
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		donutTypesComboBox.getItems().addAll(donutTypes);
+		if(flavorsOfTheDay == null) {
+			flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
+		}
+		donutFlavorComboBox.getItems().addAll(flavorsOfTheDay);
+		printArea.setStyle("-fx-text-fill: green ;");
+	}
+	public void swapToMainMenuScene(ActionEvent event) throws IOException {
+		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.setScene(new Scene(root));
+		stage.show();
+	}
+	public void confirmOrder(ActionEvent event) {
+		String type = donutTypesComboBox.getValue();
+		String flavor = donutFlavorComboBox.getValue();
+		if(checkAmount() == -1) {
+			return;
+		}
+		switch(type){
+			case "Yeast Donut":
+				MainMenuController.currentOrder.add(new Donut(DonutPrices.YEAST.name,flavor,DonutPrices.YEAST.price,this.amount));
+				break;
+			case "Cake Donut":
+				MainMenuController.currentOrder.add(new Donut(DonutPrices.CAKE.name,flavor,DonutPrices.CAKE.price,this.amount));
+				break;
+			case "Donut Holes":
+				MainMenuController.currentOrder.add(new Donut(DonutPrices.HOLE.name,flavor,DonutPrices.HOLE.price,this.amount));
+				break;
+			default:
+				printArea.setStyle("-fx-text-fill: red ;");
+				printAreaString = "Must select Donut Type";
+				printArea.setText(printAreaString);
+				return;		
+		}
+		printArea.setStyle("-fx-text-fill: green ;");
+		printArea.setText("Order added to cart");
+		reset();
+	}
+	public void reset() {
+		this.amountField.clear();
+		this.donutTypesComboBox.valueProperty().set(null);
+		this.donutFlavorComboBox.valueProperty().set(null);
+	}
+	private int checkAmount() {
+		try {
+			this.amount = Integer.parseInt(amountField.getText());
+			if(this.amount <= 0) {
+				printArea.setStyle("-fx-text-fill: red ;");
+				this.printArea.setText("Amount can not be less than or equa to 0!");
+				return -1;
+			}
+		}catch(NumberFormatException e) {
+			printArea.setStyle("-fx-text-fill: red ;");
+			this.printArea.setText("Amount must be a valid number!");
+			return -1;
+		}
+		
+		return 0;
+	}
+	public static ArrayList<String>getRandomFlavors(String[]list, int pullItems)
+    {
+        Random rand = new Random();
+        ArrayList<String> newList = new ArrayList<String>();
+        for (int i = 0; i < pullItems; i++) {
+            int randomIndex = rand.nextInt(list.length);
+            if(!newList.contains(list[randomIndex]))
+            	newList.add(list[randomIndex]);
+            else {
+            	i--;
+            	System.out.println("Had to --");
+            }
+        }
+        return newList;
+    }
+	public static void main(String[] args) {
+		flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
+		System.out.println(flavorsOfTheDay.toString());
+	}
+}
