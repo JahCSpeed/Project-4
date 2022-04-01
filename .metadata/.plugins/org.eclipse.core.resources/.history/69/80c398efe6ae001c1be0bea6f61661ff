@@ -1,7 +1,0 @@
-package donuts;
-import javafx.fxml.FXML;
-
-public class donutsSceneController {
-	@FXML
-	private Button backToMain;
-}

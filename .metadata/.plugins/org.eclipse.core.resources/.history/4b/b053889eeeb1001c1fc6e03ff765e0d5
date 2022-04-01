@@ -1,0 +1,56 @@
+package orders;
+
+import java.util.ArrayList;
+
+import mainMenu.MenuItem;
+
+public class Order implements Customizable{
+	public int orderNumber;
+	public ArrayList<MenuItem>orderList;
+	public Order(int number) {
+		this.orderList = new ArrayList<MenuItem>();
+		this.orderNumber = number;
+	}
+	@Override
+	public boolean add(Object obj) {
+		listInitilized();
+		if(obj instanceof MenuItem) {
+			this.orderList.add((MenuItem)obj);
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean remove(Object obj) {
+		listInitilized();
+		if(obj instanceof MenuItem) {
+			for(int i = 0; i < orderList.size(); i++) {
+				if(this.orderList.get(i).isEqual((MenuItem)obj) == 0) {
+					this.orderList.remove(orderList.get(i));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private void listInitilized(){
+		if(this.orderList == null) {
+			this.orderList = new ArrayList<MenuItem>();
+		}
+	}
+	public boolean isEmpty() {
+		if(this.orderList.isEmpty())
+			return true;
+		else
+			return false;
+	}
+	public String toString() {
+		String returnString = ("Order Number: " + this.orderNumber + "  |");
+		for(MenuItem e: this.orderList) {
+			returnString += (e.toString() + "\t");
+		}
+		return returnString;
+	}
+
+}

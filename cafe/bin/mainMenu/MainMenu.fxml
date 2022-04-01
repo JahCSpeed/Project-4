@@ -15,6 +15,6 @@
       <Button fx:id="orderDonutsBtn" layoutX="113.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToDonutScene" prefHeight="61.0" prefWidth="172.0" text="Order Donuts" />
       <Button fx:id="orderCoffeeBtn" layoutX="475.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToCoffeeScene" prefHeight="61.0" prefWidth="172.0" text="Order Coffee" />
       <Button fx:id="gotoBasketBtn" layoutX="113.0" layoutY="374.0" mnemonicParsing="false" onAction="#swapToOrderScene" prefHeight="61.0" prefWidth="172.0" text="Basket" />
-      <Button fx:id="gotoStoreOrdersBtn" layoutX="475.0" layoutY="374.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="172.0" text="Store Orders" />
+      <Button fx:id="gotoStoreOrdersBtn" layoutX="475.0" layoutY="374.0" mnemonicParsing="false" onAction="#swapToStoreOrderScene" prefHeight="61.0" prefWidth="172.0" text="Store Orders" />
    </children>
 </Pane>

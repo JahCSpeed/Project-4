@@ -2,6 +2,8 @@ package orders;
 
 import java.util.ArrayList;
 
+import coffee.Coffee;
+import donut.Donut;
 import mainMenu.MenuItem;
 
 public class Order implements Customizable{
@@ -38,6 +40,28 @@ public class Order implements Customizable{
 		if(this.orderList == null) {
 			this.orderList = new ArrayList<MenuItem>();
 		}
+	}
+	public boolean isEmpty() {
+		if(this.orderList.isEmpty())
+			return true;
+		else
+			return false;
+	}
+	public String toString() {
+		String returnString = ("Order Number: " + this.orderNumber + "  ");
+		for(MenuItem e: this.orderList) {
+			if(e instanceof Donut) {
+				returnString+= "-Donut( ";
+				returnString += e.toString();
+				returnString += " )\n";
+			}
+			if(e instanceof Coffee) {
+				returnString+= "-Coffee( ";
+				returnString += e.toString();
+				returnString += " )\n";
+			}	
+		}
+		return returnString;
 	}
 
 }

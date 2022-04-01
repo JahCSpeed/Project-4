@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -25,6 +26,8 @@ public class basketController implements Initializable{
 	private Label orderNumberLabel,subTotalLabel,salesTaxLabel,totalLabel;
 	@FXML
 	private ListView<ComboBox<String>> ordersListView;
+	@FXML
+	private TextArea textField;
 	private String [] options = {"Remove Order"};
 	private final double SALES_TAX = ((6.625)/100);
 	public void swapToMainMenuScene(ActionEvent event) throws IOException {
@@ -49,6 +52,19 @@ public class basketController implements Initializable{
 			ordersListView.getItems().add(temp);
 		}
 	}
+	public void finilizeOrder(ActionEvent event) throws IOException {
+		if(MainMenuController.currentOrder.isEmpty()) {
+			textField.setStyle("-fx-text-fill: red ;");
+			textField.setText("Can't place order with no items in basket!");
+			return;
+		}
+		MainMenuController.storeOrders.add(MainMenuController.currentOrder);
+		MainMenuController.resetOrder();
+		textField.setStyle("-fx-text-fill: green ;");
+		textField.setText("Order Placed!");
+		addToListView();
+		setLabels();
+	}
 	private void setLabels() {
 		double subtotal = 0;
 		double salesTax = 0;
@@ -62,12 +78,14 @@ public class basketController implements Initializable{
 		subTotalLabel.setText("Subtotal: " + format.format(subtotal));
 		salesTaxLabel.setText("Sales Tax: " + format.format(salesTax));
 		totalLabel.setText("Total: " + format.format(finalTotal));
-
+		orderNumberLabel.setText("Order Number: " + MainMenuController.currentOrder.orderNumber);
 		
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		orderNumberLabel.setText("Order Number: " + MainMenuController.currentOrder.orderNumber);
+		textField.setText("");
+
 		addToListView();
 		setLabels();
 	}
