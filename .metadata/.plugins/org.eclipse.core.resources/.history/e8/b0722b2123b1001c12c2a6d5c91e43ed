@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMenu.MainMenuController">
+   <children>
+      <Label layoutX="285.0" layoutY="68.0" prefHeight="61.0" prefWidth="190.0" text="RU-Cafe">
+         <font>
+            <Font size="49.0" />
+         </font>
+      </Label>
+      <Button fx:id="orderDonutsBtn" layoutX="113.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToDonutScene" prefHeight="61.0" prefWidth="172.0" text="Order Donuts" />
+      <Button fx:id="orderCoffeeBtn" layoutX="475.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToCoffeeScene" prefHeight="61.0" prefWidth="172.0" text="Order Coffee" />
+      <Button fx:id="gotoBasketBtn" layoutX="113.0" layoutY="374.0" mnemonicParsing="false" onAction="#swapToOrderScene" prefHeight="61.0" prefWidth="172.0" text="Basket" />
+      <Button fx:id="gotoStoreOrdersBtn" layoutX="475.0" layoutY="374.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="172.0" text="Store ORders" />
+   </children>
+</Pane>

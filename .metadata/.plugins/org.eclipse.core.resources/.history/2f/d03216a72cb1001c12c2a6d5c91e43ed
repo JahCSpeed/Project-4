@@ -1,0 +1,13 @@
+package coffee;
+
+public enum CoffeePrices {
+	SMALL(1.69),
+	TALl(1.69 + PRICE_INCREASE),
+	HOLE("Donut Hole",0.39);
+	
+	public final double price;
+	public final static double PRICE_INCREASE = 0.40;
+	private CoffeePrices(double price) {
+		this.price = price;
+	}
+}

@@ -30,6 +30,6 @@ public abstract class MenuItem {
 		
 	}
 	public String toString() {
-		return "Item: " + this.itemName + "  Flavor: " + this.itemType + "  Amount: " + this.amount;
+		return "Item: " + this.itemName + "  | Flavor: " + this.itemType + "  | Quantity: " + this.amount;
 	}
 }

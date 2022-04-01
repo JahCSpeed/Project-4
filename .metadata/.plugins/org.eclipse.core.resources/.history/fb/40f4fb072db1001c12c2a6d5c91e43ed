@@ -1,0 +1,12 @@
+package coffee;
+
+import java.util.List;
+
+public class Coffee extends MenuItem implements Customizable {
+	public Coffee(String size, String coffee, double price, int amount,List<String> addins ) {
+		this.itemName = size;
+		this.itemType = donutType;
+		this.amount = amount;
+		this.price = amount * price;
+	}
+}

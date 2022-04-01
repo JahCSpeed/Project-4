@@ -1,0 +1,42 @@
+package coffee;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import mainMenu.MenuItem;
+import orders.Customizable;
+
+public class Coffee extends MenuItem implements Customizable {
+	public ArrayList<String>addIns;
+	public Coffee(String size, String coffee, double price, int amount) {
+		this.itemName = size;
+		this.itemType = coffee;
+		this.amount = amount;
+		this.price = amount * price;
+	}
+
+	@Override
+	public boolean add(Object obj) {
+		listInitilized();
+		if(obj instanceof String) {
+			this.addIns.add((String)obj);
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean remove(Object obj) {
+		listInitilized();
+		if(obj instanceof String) {
+			this.addIns.remove();
+			return true;
+			
+		}
+		return false;
+	}
+	private void listInitilized(){
+		if(this.addIns == null) {
+			this.addIns = new ArrayList<String>();
+		}
+	}
+}

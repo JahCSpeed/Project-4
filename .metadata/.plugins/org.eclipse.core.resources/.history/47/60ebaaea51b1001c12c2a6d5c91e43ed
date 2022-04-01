@@ -1,0 +1,15 @@
+package coffee;
+
+public enum CoffeePrices {
+	SMALL("Small",1.69),
+	TALL("Tall",2.09),
+	GRANDE("Grande",2.49),
+	VENTI("Venti",2.89);
+	
+	public final double price;
+	public final String name;
+	private CoffeePrices(String name,double price) {
+		this.name = name;
+		this.price = price;
+	}
+}

@@ -1,0 +1,27 @@
+package coffee;
+
+import java.util.List;
+
+import mainMenu.MenuItem;
+import orders.Customizable;
+
+public class Coffee extends MenuItem implements Customizable {
+	public Coffee(String size, String coffee, double price, int amount,List<String> addins ) {
+		this.itemName = size;
+		this.itemType = donutType;
+		this.amount = amount;
+		this.price = amount * price;
+	}
+
+	@Override
+	public boolean add(Object obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean remove(Object obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}

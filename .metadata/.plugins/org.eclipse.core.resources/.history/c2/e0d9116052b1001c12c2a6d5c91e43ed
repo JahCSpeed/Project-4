@@ -1,0 +1,259 @@
+package mainMenu;
+
+import java.io.IOException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import coffee.Coffee;
+import coffee.CoffeePrices;
+import donut.Donut;
+import donut.DonutPrices;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.InputEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class coffeeController implements Initializable {
+	@FXML
+	public Label allOrdersubtotalLabel, subtotalLabel;
+	@FXML
+	public Button backToMain,completeOrder;
+	@FXML
+	public ComboBox<String> drinkSizesBox;
+	@FXML
+	private TextField amountField;
+	@FXML
+	private TextArea errorField;
+	@FXML
+	public RadioButton smallCheck,tallCheck,grandeCheck,ventiCheck;
+	@FXML
+	public CheckBox creamCheck,syrupCheck,milkCheck,caramelCheck,whippedCheck;
+	@FXML
+	private ListView<ComboBox<String>> coffeeOrdersListView;
+	private String [] options = {"Edit Order", "Remove Order"};
+	private final double ADD_IN_PRICE = 0.30;
+	public void swapToMainMenuScene(ActionEvent event) throws IOException {
+		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.setScene(new Scene(root));
+		stage.show();
+	}
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		ToggleGroup tg = new ToggleGroup();
+		this.smallCheck.setToggleGroup(tg);
+		this.tallCheck.setToggleGroup(tg);
+		this.grandeCheck.setToggleGroup(tg);
+		this.ventiCheck.setToggleGroup(tg);
+
+	}
+	public void numbersOnly(InputEvent event) {
+		String text = (amountField.getText());
+		String newText = "";
+		try{
+			Double.parseDouble(text);
+			String[]broken = text.split("");
+			if(broken[0].equals("0")) {
+				for(int i = 1; i < broken.length;i++) {
+					if(isNumeric(broken[i])) {
+							newText+=broken[i];
+					}
+				}
+				amountField.setText(newText);
+			}
+			
+		}catch(NumberFormatException e) {
+			String[]broken = text.split("");
+			for(int i = 0; i < broken.length;i++) {
+				if(isNumeric(broken[i])) {
+					if(!(text.length() == 0 && Integer.parseInt(text) == 0))
+						newText+=broken[i];
+				}
+			}
+			amountField.setText(newText);
+		}
+		
+	}
+	public static boolean isNumeric(String str) { 
+		  try {  
+		    Double.parseDouble(str);  
+		    return true;
+		  } catch(NumberFormatException e){  
+		    return false;  
+		  }  
+		}
+	public void actionDone(ActionEvent event) {
+		String size = "";
+		errorField.setStyle("-fx-text-fill: green ;");
+		errorField.setText("");
+		DecimalFormat format = new DecimalFormat("'$'0.00");
+		double total = 0;
+		if(smallCheck.isSelected()) {
+			total = CoffeePrices.SMALL.price;
+			size = "Small";
+		}
+		if(tallCheck.isSelected()) {
+			total = CoffeePrices.TALL.price;
+			size = "Tall";
+		}
+		if(grandeCheck.isSelected()) {
+			total = CoffeePrices.GRANDE.price;
+			size = "Grande";
+		}
+		if(ventiCheck.isSelected()) {
+			total = CoffeePrices.VENTI.price;
+			size = "Venti";
+		}
+		if(!checkForSize()) {
+			errorField.setStyle("-fx-text-fill: red ;");
+			errorField.setText("Must select size first before addins!");
+			resetAddChecks();
+			return;
+		}
+		if(creamCheck.isSelected()) {
+			total+= ADD_IN_PRICE;
+		}
+		if(syrupCheck.isSelected()) {
+			total+= ADD_IN_PRICE;
+		}
+		if(milkCheck.isSelected()) {
+			total+= ADD_IN_PRICE;
+		}
+		if(caramelCheck.isSelected()) {
+			total+= ADD_IN_PRICE;
+		}
+		if(whippedCheck.isSelected()) {
+			total+= ADD_IN_PRICE;
+		}
+		int amount = 1;
+		if(!amountField.getText().isEmpty()) {
+			amount = Integer.parseInt(amountField.getText());
+		}
+		total = total * amount;
+		subtotalLabel.setText(format.format(total));
+		if(event.getSource().equals(completeOrder)) {
+			Coffee orderCoffee = new Coffee(size,"Black",total,amount);
+			if(creamCheck.isSelected()) {
+				orderCoffee.addIns.add(creamCheck.getText());
+			}
+			if(syrupCheck.isSelected()) {
+				orderCoffee.addIns.add(syrupCheck.getText());
+			}
+			if(milkCheck.isSelected()) {
+				orderCoffee.addIns.add(milkCheck.getText());
+			}
+			if(caramelCheck.isSelected()) {
+				orderCoffee.addIns.add(caramelCheck.getText());
+			}
+			if(whippedCheck.isSelected()) {
+				orderCoffee.addIns.add(whippedCheck.getText());
+			}
+			errorField.setStyle("-fx-text-fill: green ;");
+			errorField.setText("Order added to cart");
+			MainMenuController.currentOrder.add(orderCoffee);
+			addToListView();
+		}
+	}
+	public void addToListView() {
+		DecimalFormat format = new DecimalFormat("'$'0.00");
+		coffeeOrdersListView.getItems().clear();
+		double subTotal = 0;
+		for(MenuItem e : MainMenuController.currentOrder.orderList) {
+			if(!(e instanceof Coffee)) {
+				continue;
+			}
+			ComboBox<String> temp = new ComboBox<String>();
+			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.price));
+			temp.getItems().addAll(options);
+			temp.setOnAction(event -> {
+				if(temp.getValue().equals("Edit Order")) {
+					MainMenuController.currentOrder.remove(e);
+					//setEdit(e.itemName,e.itemType,e.amount);
+					addToListView();
+					
+				}
+				if(temp.getValue().equals("Remove Order")) {
+					MainMenuController.currentOrder.remove(e);
+		    		addToListView();	
+				}
+			});
+			coffeeOrdersListView.getItems().add(temp);
+			subTotal+= e.price;
+		}
+		allOrdersubtotalLabel.setText("Subtotal: " + format.format(subTotal));
+		resetAddChecks();
+		resetSizeChecks();
+		amountField.setText("");
+		
+
+	}
+	private void setEdit(String size,int amount,ArrayList<String> addins) {
+		this.amountField.setText(String.valueOf(amount));
+		switch(size) {
+			case "Small":
+				smallCheck.setSelected(true);
+				break;
+			case "Tall":
+				tallCheck.setSelected(true);
+				break;
+			case "Grande":
+				grandeCheck.setSelected(true);
+				break;
+			case "Venti":
+				ventiCheck.setSelected(true);
+				break;
+		}
+		for(String add: addins) {
+			if(add.equals(creamCheck.getText())) {
+				creamCheck.setSelected(true);
+			}
+			if(add.equals(syrupCheck.getText())) {
+				syrupCheck.setSelected(true);
+			}
+			if(add.equals(milkCheck.getText())) {
+				milkCheck.setSelected(true);
+			}
+			if(add.equals(caramelCheck.getText())) {
+				caramelCheck.setSelected(true);
+			}
+			if(add.equals(whippedCheck.getText())) {
+				whippedCheck.setSelected(true);
+			}
+		}
+	}
+	public boolean checkForSize() {
+		if(!smallCheck.isSelected() && !tallCheck.isSelected() && !grandeCheck.isSelected() && !ventiCheck.isSelected()) {
+			return false;
+		}
+		return true;
+	}
+	public void resetAddChecks() {
+		creamCheck.setSelected(false);
+		syrupCheck.setSelected(false);
+		milkCheck.setSelected(false);
+		caramelCheck.setSelected(false);
+		whippedCheck.setSelected(false);
+	}
+	public void resetSizeChecks() {
+		smallCheck.setSelected(false);
+		tallCheck.setSelected(false);
+		grandeCheck.setSelected(false);
+		ventiCheck.setSelected(false);
+	}
+}

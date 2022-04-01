@@ -42,13 +42,15 @@ public class donutsSceneController implements Initializable{
 				"Boston Creme", "Chocolate Glazed", "Butter Nut", "Chocolate Creme", "French Cruller", "Double Chocolate",
 				"Maple Frosted"};
 	private String [] options = {"Edit Order", "Remove Order"};
+	private final int MIN_FLAVORS = 3;
+	private final int MAX_FLAVORS = 5;
 	private static ArrayList<String> flavorsOfTheDay;
 	private int amount;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		donutTypesComboBox.getItems().addAll(donutTypes);
 		if(flavorsOfTheDay == null) {
-			flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
+			flavorsOfTheDay = getRandomFlavors(donutFlavors,randomIntFromInterval(MIN_FLAVORS,MAX_FLAVORS));
 		}
 		donutFlavorComboBox.getItems().addAll(flavorsOfTheDay);
 		printArea.setStyle("-fx-text-fill: green ;");
@@ -93,6 +95,7 @@ public class donutsSceneController implements Initializable{
 		this.donutFlavorComboBox.valueProperty().set(null);
 	}
 	public void addToListView() {
+		DecimalFormat format = new DecimalFormat("'$'0.00");
 		donutOrdersListView.getItems().clear();
 		double subTotal = 0;
 		for(MenuItem e : MainMenuController.currentOrder.orderList) {
@@ -100,7 +103,7 @@ public class donutsSceneController implements Initializable{
 				continue;
 			}
 			ComboBox<String> temp = new ComboBox<String>();
-			temp.setPromptText(e.toString());
+			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.price));
 			temp.getItems().addAll(options);
 			temp.setOnAction(event -> {
 				if(temp.getValue().equals("Edit Order")) {
@@ -117,7 +120,6 @@ public class donutsSceneController implements Initializable{
 			donutOrdersListView.getItems().add(temp);
 			subTotal+= e.price;
 		}
-		DecimalFormat format = new DecimalFormat("'$'0.00");
 		subtotalLabel.setText("Subtotal: " + format.format(subTotal));
 
 
@@ -145,8 +147,7 @@ public class donutsSceneController implements Initializable{
 		
 		return 0;
 	}
-	public static ArrayList<String>getRandomFlavors(String[]list, int pullItems)
-    {
+	public ArrayList<String>getRandomFlavors(String[]list, int pullItems){
         Random rand = new Random();
         ArrayList<String> newList = new ArrayList<String>();
         for (int i = 0; i < pullItems; i++) {
@@ -160,8 +161,8 @@ public class donutsSceneController implements Initializable{
         }
         return newList;
     }
-	public static void main(String[] args) {
-		flavorsOfTheDay = getRandomFlavors(donutFlavors,3);
-		System.out.println(flavorsOfTheDay.toString());
+	public int randomIntFromInterval(int min, int max) {
+		  return (int) Math.floor(Math.random() * (max - min + 1) + min);
 	}
+	
 }

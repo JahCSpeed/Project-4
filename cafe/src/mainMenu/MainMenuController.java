@@ -32,6 +32,18 @@ public class MainMenuController implements Initializable {
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
+	public void swapToCoffeeScene(ActionEvent event) throws IOException {
+		Pane root = (Pane)FXMLLoader.load(getClass().getResource("coffeeScene.fxml"));
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.setScene(new Scene(root));
+		stage.show();	
+	}
+	public void swapToOrderScene(ActionEvent event) throws IOException {
+		Pane root = (Pane)FXMLLoader.load(getClass().getResource("basketScene.fxml"));
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.setScene(new Scene(root));
+		stage.show();	
+	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if(currentOrder == null)
