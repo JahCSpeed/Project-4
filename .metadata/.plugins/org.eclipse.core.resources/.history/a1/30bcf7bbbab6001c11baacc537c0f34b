@@ -1,0 +1,13 @@
+package coffee;
+
+public enum CoffeePrices {
+	SMALL(1.69),
+	TALL(2.09),
+	GRANDE(2.49),
+	VENTI(2.89);
+	
+	private final double price;
+	private CoffeePrices(double price) {
+		this.price = price;
+	}
+}

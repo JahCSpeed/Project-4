@@ -2,7 +2,6 @@ package mainMenu;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -12,10 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orders.Order;
 import orders.OrderNumbers;
+import orders.StoreOrder;
 
 public class MainMenuController implements Initializable {
 	@FXML
@@ -26,11 +28,17 @@ public class MainMenuController implements Initializable {
 	private Button gotoBasketBtn;
 	@FXML
 	private Button gotoStoreOrdersBtn;
+	@FXML
+	private ImageView donutImageView;
+	@FXML
+	private ImageView coffeeImageView;
 	public static Order currentOrder;
-	public static ArrayList<Order> storeOrders;
+	public static StoreOrder storeOrders;
+	private final String DONUT_PIC = String.valueOf(getClass().getResource("donuts.png"));
+	private final String COFEE_PIC = String.valueOf(getClass().getResource("coffee.jpeg"));
 	public void swapToDonutScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("donutsScene.fxml"));
-		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
@@ -57,10 +65,15 @@ public class MainMenuController implements Initializable {
 		if(currentOrder == null)
 			currentOrder = new Order(OrderNumbers.getOrderNumber());
 		if(storeOrders == null)
-			storeOrders = new ArrayList<Order>();
+			storeOrders = new StoreOrder();
+		Image donutImage = new Image(DONUT_PIC);
+		Image cartImage = new Image(COFEE_PIC);
+		donutImageView.setImage(donutImage);
+		coffeeImageView.setImage(cartImage);
 		
 	}
 	public static void resetOrder() {
 		currentOrder = new Order(OrderNumbers.getOrderNumber());
 	}
+	
 }

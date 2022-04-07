@@ -29,24 +29,24 @@ import javafx.stage.Stage;
 
 public class coffeeController implements Initializable {
 	@FXML
-	public Label allOrdersubtotalLabel, subtotalLabel;
+	private Label allOrdersubtotalLabel, subtotalLabel;
 	@FXML
-	public Button backToMain,completeOrder;
+	private Button backToMain,completeOrder;
 	@FXML
-	public ComboBox<String> drinkSizesBox;
+	private ComboBox<String> drinkSizesBox;
 	@FXML
 	private TextField amountField;
 	@FXML
 	private TextArea errorField;
 	@FXML
-	public RadioButton smallCheck,tallCheck,grandeCheck,ventiCheck;
+	private RadioButton smallCheck,tallCheck,grandeCheck,ventiCheck;
 	@FXML
-	public CheckBox creamCheck,syrupCheck,milkCheck,caramelCheck,whippedCheck;
+	private CheckBox creamCheck,syrupCheck,milkCheck,caramelCheck,whippedCheck;
 	@FXML
 	private ListView<ComboBox<String>> coffeeOrdersListView;
 	private String [] options = {"Edit Order", "Remove Order"};
 	private final double ADD_IN_PRICE = 0.30;
-	private final DecimalFormat format = new DecimalFormat("'$'0.00");
+	private final DecimalFormat format = new DecimalFormat("$###,##0.00");
 	public void swapToMainMenuScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -95,6 +95,7 @@ public class coffeeController implements Initializable {
 		    Double.parseDouble(str);  
 		    return true;
 		  } catch(NumberFormatException e){  
+			  System.out.println("error");
 		    return false;  
 		  }  
 		}
@@ -121,7 +122,7 @@ public class coffeeController implements Initializable {
 		}
 		if(!checkForSize()) {
 			errorField.setStyle("-fx-text-fill: red ;");
-			errorField.setText("Must select size first before addins!");
+			errorField.setText("Must select size first!");
 			resetAddChecks();
 			return;
 		}
@@ -167,6 +168,7 @@ public class coffeeController implements Initializable {
 			errorField.setText("Order added to cart");
 			MainMenuController.currentOrder.add(orderCoffee);
 			subtotalLabel.setText(format.format(0));
+			amountField.setText("");
 			addToListView();
 			resetAddChecks();
 			resetSizeChecks();
@@ -180,12 +182,12 @@ public class coffeeController implements Initializable {
 				continue;
 			}
 			ComboBox<String> temp = new ComboBox<String>();
-			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.price));
+			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.itemPrice()));
 			temp.getItems().addAll(options);
 			temp.setOnAction(event -> {
 				if(temp.getValue().equals("Edit Order")) {
 					MainMenuController.currentOrder.remove(e);
-					setEdit(e.itemName,e.amount,((Coffee)e).addIns,e.price);
+					setEdit(e.itemName,e.amount,((Coffee)e).addIns,e.itemPrice());
 					addToListView();
 					
 				}
@@ -195,16 +197,14 @@ public class coffeeController implements Initializable {
 				}
 			});
 			coffeeOrdersListView.getItems().add(temp);
-			subTotal+= e.price;
+			subTotal+= e.itemPrice();
 			
 		}
 		allOrdersubtotalLabel.setText("Subtotal: " + format.format(subTotal));
-		amountField.setText("");
 		
 
 	}
 	private void setEdit(String size,int amount,ArrayList<String> addins,double price) {
-		this.amountField.setText(String.valueOf(amount));
 		switch(size) {
 			case "Small":
 				smallCheck.setSelected(true);
@@ -237,6 +237,8 @@ public class coffeeController implements Initializable {
 			}
 		}
 		subtotalLabel.setText(format.format(price));
+		System.out.println(String.valueOf(amount));
+		amountField.setText(String.valueOf(amount));
 	}
 	public boolean checkForSize() {
 		if(!smallCheck.isSelected() && !tallCheck.isSelected() && !grandeCheck.isSelected() && !ventiCheck.isSelected()) {

@@ -7,7 +7,7 @@ public class Donut extends MenuItem {
 		this.itemName = donutName;
 		this.itemType = donutType;
 		this.amount = amount;
-		this.price = amount * price;
+		this.price = price;
 	}
 
 }

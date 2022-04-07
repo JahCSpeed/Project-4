@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -12,9 +13,11 @@
             <Font size="49.0" />
          </font>
       </Label>
-      <Button fx:id="orderDonutsBtn" layoutX="113.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToDonutScene" prefHeight="61.0" prefWidth="172.0" text="Order Donuts" />
-      <Button fx:id="orderCoffeeBtn" layoutX="475.0" layoutY="245.0" mnemonicParsing="false" onAction="#swapToCoffeeScene" prefHeight="61.0" prefWidth="172.0" text="Order Coffee" />
-      <Button fx:id="gotoBasketBtn" layoutX="113.0" layoutY="374.0" mnemonicParsing="false" onAction="#swapToOrderScene" prefHeight="61.0" prefWidth="172.0" text="Basket" />
-      <Button fx:id="gotoStoreOrdersBtn" layoutX="475.0" layoutY="374.0" mnemonicParsing="false" onAction="#swapToStoreOrderScene" prefHeight="61.0" prefWidth="172.0" text="Store Orders" />
+      <ImageView fx:id="donutImageView" fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="coffeeImageView" fitHeight="150.0" fitWidth="200.0" layoutX="504.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="orderDonutsBtn" layoutX="95.0" layoutY="210.0" mnemonicParsing="false" onAction="#swapToDonutScene" prefHeight="71.0" prefWidth="190.0" text="Order Donuts" />
+      <Button fx:id="orderCoffeeBtn" layoutX="475.0" layoutY="210.0" mnemonicParsing="false" onAction="#swapToCoffeeScene" prefHeight="71.0" prefWidth="190.0" text="Order Coffee" />
+      <Button fx:id="gotoBasketBtn" layoutX="95.0" layoutY="364.0" mnemonicParsing="false" onAction="#swapToOrderScene" prefHeight="71.0" prefWidth="190.0" text="Cart" />
+      <Button fx:id="gotoStoreOrdersBtn" layoutX="475.0" layoutY="364.0" mnemonicParsing="false" onAction="#swapToStoreOrderScene" prefHeight="71.0" prefWidth="190.0" text="Store Orders" />
    </children>
 </Pane>

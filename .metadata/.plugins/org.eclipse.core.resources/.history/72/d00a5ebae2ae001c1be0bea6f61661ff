@@ -1,7 +1,0 @@
-package mainMenu;
-
-import javafx.scene.control.Button;
-
-public class MainMenuController {
-	private Button orderDonutsBtn,orderCoffeeBtn,gotoBasketBtn,gotoStoreOrdersBtn;
-}

@@ -5,11 +5,14 @@ public abstract class MenuItem {
 	protected int amount;
 	protected String itemName;
 	protected String itemType;
-	public  double itemPrice() {
-		return price;
+	public double itemPrice() {
+		return price * amount;
 	}
 	public int getAmount() {
 		return amount;
+	}
+	public double getPrice() {
+		return price;
 	}
 	public String getItemName() {
 		return itemName;

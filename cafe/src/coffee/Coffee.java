@@ -11,10 +11,10 @@ public class Coffee extends MenuItem implements Customizable {
 		this.itemName = size;
 		this.itemType = coffee;
 		this.amount = amount;
-		this.price = amount * price;
+		this.price = price;
 		this.addIns = new ArrayList<String>();
 	}
-
+	
 	@Override
 	public boolean add(Object obj) {
 		listInitilized();
@@ -42,11 +42,15 @@ public class Coffee extends MenuItem implements Customizable {
 	@Override
 	public String toString() {
 		String returnString = ("Size: " + this.itemName + "  | Flavor: " + this.itemType + "  | Addins: ");
-		for(int i = 0; i < addIns.size(); i++) {
-			if(i != addIns.size()  -1)
-				returnString+= addIns.get(i) + ", ";
-			else
-				returnString+= addIns.get(i);
+		if(addIns.size() == 0) {
+			returnString+= "NONE";
+		}else {
+			for(int i = 0; i < addIns.size(); i++) {
+				if(i != addIns.size()  -1)
+					returnString+= addIns.get(i) + ", ";
+				else
+					returnString+= addIns.get(i);
+			}
 		}
 		returnString+= "  |Quantity: " + this.amount;
 		return returnString;

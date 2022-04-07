@@ -25,9 +25,9 @@ import javafx.stage.Stage;
 
 public class donutsSceneController implements Initializable{
 	@FXML
-	public Button backToMain,confirmOrder;
+	private Button backToMain,confirmOrder;
 	@FXML
-	public ComboBox<String> donutTypesComboBox,donutFlavorComboBox;
+	private ComboBox<String> donutTypesComboBox,donutFlavorComboBox;
 	@FXML
 	private TextField amountField;
 	@FXML
@@ -36,12 +36,11 @@ public class donutsSceneController implements Initializable{
 	private Label subtotalLabel;
 	@FXML
 	private ListView<ComboBox<String>> donutOrdersListView;
-	private String printAreaString;
 	private final String[] donutTypes = {"Yeast Donut","Cake Donut","Donut Holes"};
 	private static String[] donutFlavors = {"Glazed", "Old Fassioned", "Jelly", "Blueberry", "Chocloate Frosted",
 				"Boston Creme", "Chocolate Glazed", "Butter Nut", "Chocolate Creme", "French Cruller", "Double Chocolate",
 				"Maple Frosted"};
-	private String [] options = {"Edit Order", "Remove Order"};
+	private final String [] options = {"Edit Order", "Remove Order"};
 	private final int MIN_FLAVORS = 3;
 	private final int MAX_FLAVORS = 5;
 	private static ArrayList<String> flavorsOfTheDay;
@@ -65,7 +64,7 @@ public class donutsSceneController implements Initializable{
 	public void confirmOrder(ActionEvent event) {
 		String type = donutTypesComboBox.getValue();
 		String flavor = donutFlavorComboBox.getValue();
-		if(checkAmount() == -1) {
+		if(checkDonutType() == -1 || checkDonutFlavor() == -1 || checkAmount() == -1) {
 			return;
 		}
 		switch(type){
@@ -79,9 +78,6 @@ public class donutsSceneController implements Initializable{
 				MainMenuController.currentOrder.add(new Donut(DonutPrices.HOLE.name,flavor,DonutPrices.HOLE.price,this.amount));
 				break;
 			default:
-				printArea.setStyle("-fx-text-fill: red ;");
-				printAreaString = "Must select Donut Type";
-				printArea.setText(printAreaString);
 				return;		
 		}
 		printArea.setStyle("-fx-text-fill: green ;");
@@ -95,7 +91,7 @@ public class donutsSceneController implements Initializable{
 		this.donutFlavorComboBox.valueProperty().set(null);
 	}
 	public void addToListView() {
-		DecimalFormat format = new DecimalFormat("'$'0.00");
+		DecimalFormat format = new DecimalFormat("$###,##0.00");
 		donutOrdersListView.getItems().clear();
 		double subTotal = 0;
 		for(MenuItem e : MainMenuController.currentOrder.orderList) {
@@ -103,7 +99,7 @@ public class donutsSceneController implements Initializable{
 				continue;
 			}
 			ComboBox<String> temp = new ComboBox<String>();
-			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.price));
+			temp.setPromptText(e.toString() + "  | Price: " + format.format(e.itemPrice()));
 			temp.getItems().addAll(options);
 			temp.setOnAction(event -> {
 				if(temp.getValue().equals("Edit Order")) {
@@ -118,7 +114,7 @@ public class donutsSceneController implements Initializable{
 				}
 			});
 			donutOrdersListView.getItems().add(temp);
-			subTotal+= e.price;
+			subTotal+= e.itemPrice();
 		}
 		subtotalLabel.setText("Subtotal: " + format.format(subTotal));
 
@@ -147,6 +143,24 @@ public class donutsSceneController implements Initializable{
 		
 		return 0;
 	}
+	private int checkDonutType() {
+		if(donutTypesComboBox.getValue() == null) {
+			printArea.setStyle("-fx-text-fill: red ;");
+			printArea.setText("Must select Donut Type");
+			return -1;
+		}
+		
+		return 0;
+	}
+	private int checkDonutFlavor() {
+		if(donutFlavorComboBox.getValue() == null) {
+			printArea.setStyle("-fx-text-fill: red ;");
+			printArea.setText("Must select Donut Flavor");
+			return -1;
+		}
+		
+		return 0;
+	}
 	public ArrayList<String>getRandomFlavors(String[]list, int pullItems){
         Random rand = new Random();
         ArrayList<String> newList = new ArrayList<String>();
@@ -156,7 +170,6 @@ public class donutsSceneController implements Initializable{
             	newList.add(list[randomIndex]);
             else {
             	i--;
-            	System.out.println("Had to --");
             }
         }
         return newList;

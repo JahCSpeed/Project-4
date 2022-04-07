@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 public class basketController implements Initializable{
 	@FXML
-	public Button backToMain,submitOrder;
+	private Button backToMain,submitOrder;
 	@FXML
 	private Label orderNumberLabel,subTotalLabel,salesTaxLabel,totalLabel;
 	@FXML
@@ -74,7 +74,7 @@ public class basketController implements Initializable{
 		}
 		salesTax = subtotal * SALES_TAX;
 		finalTotal = subtotal + salesTax;
-		DecimalFormat format = new DecimalFormat("'$'0.00");
+		DecimalFormat format = new DecimalFormat("$###,##0.00");
 		subTotalLabel.setText("Subtotal: " + format.format(subtotal));
 		salesTaxLabel.setText("Sales Tax: " + format.format(salesTax));
 		totalLabel.setText("Total: " + format.format(finalTotal));

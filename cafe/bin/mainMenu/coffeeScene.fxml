@@ -39,7 +39,7 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="amountField" layoutX="336.0" layoutY="114.0" onAction="#actionDone" onKeyTyped="#numbersOnly" promptText="Numeric Value" />
+      <TextField fx:id="amountField" layoutX="336.0" layoutY="114.0" onAction="#actionDone" onKeyTyped="#numbersOnly" promptText="Defualt: 1" />
       <ListView fx:id="coffeeOrdersListView" layoutX="336.0" layoutY="200.0" prefHeight="246.0" prefWidth="417.0" />
       <Label layoutX="336.0" layoutY="180.0" prefHeight="17.0" prefWidth="232.0" text="Drink Orders" />
       <Label fx:id="allOrdersubtotalLabel" layoutX="336.0" layoutY="447.0" prefHeight="29.0" prefWidth="417.0" text="All Orders Subtotal:">

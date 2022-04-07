@@ -1,5 +1,0 @@
-package mainMenu;
-
-public class MainMenuController {
-	private Button orderDonutsBtn,orderCoffeeBtn,gotoBasketBtn,gotoStoreOrdersBtn;
-}

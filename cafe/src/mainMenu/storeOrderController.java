@@ -1,8 +1,8 @@
 package mainMenu;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -13,15 +13,17 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orders.Order;
 
 public class storeOrderController implements Initializable{
 	@FXML
-	public Button backToMain,submitOrder;
+	public Button backToMain,submitOrder,exportOrder;
+	@FXML
+	private TextArea printArea;
 	@FXML
 	private ListView<ComboBox<String>> ordersListView;
 	private String [] options = {"Remove Order"};
@@ -31,9 +33,28 @@ public class storeOrderController implements Initializable{
 		stage.setScene(new Scene(root));
 		stage.show();
 	}
+	public void exportData(ActionEvent event) {
+		if(MainMenuController.storeOrders.isEmpty()) {
+			 printArea.setStyle("-fx-text-fill: red ;");
+			 printArea.setText("No orders to export!");
+			 return;
+		}
+		String data = "";
+		for(Order e : MainMenuController.storeOrders.storeOrders) {
+			data+= e.toString();
+			data+= "\n";
+		}
+		try {
+			FileWriter output = new FileWriter("All Store Orders.txt");
+		    output.write(data);
+		    output.close();
+		    printArea.setStyle("-fx-text-fill: green ;");
+			printArea.setText("All orders exported!");
+		}catch (Exception e) {}
+	}
 	public void addToListView() {
 		ordersListView.getItems().clear();
-		for(Order e : MainMenuController.storeOrders) {
+		for(Order e : MainMenuController.storeOrders.storeOrders) {
 			ComboBox<String> temp = new ComboBox<String>();
 			temp.setPromptText(e.toString());
 			temp.getItems().addAll(options);
