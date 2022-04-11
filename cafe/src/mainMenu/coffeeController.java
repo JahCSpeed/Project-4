@@ -27,6 +27,12 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ The coffeeController class handles the main functionalities as seen in Coffee.java and can customize Coffees in a user interface.
+ Able to create a coffee of different sizes with different addins as well as notice if invalid coffee inputs were attempted
+ to be entered into the system.
+ @author Jah C. Speed, Abe Vitangcol
+ */
 public class coffeeController implements Initializable {
 	@FXML
 	private Label allOrdersubtotalLabel, subtotalLabel;
@@ -47,12 +53,23 @@ public class coffeeController implements Initializable {
 	private String [] options = {"Edit Order", "Remove Order"};
 	private final double ADD_IN_PRICE = 0.30;
 	private final DecimalFormat format = new DecimalFormat("$###,##0.00");
+	
+	/**
+	 Swaps the current scene back to the main menu in order to do other actions.
+	 @param event A mouse click on the "Main Menu" button.
+	 */
 	public void swapToMainMenuScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();
 	}
+	
+	/**
+	 Initializes the GUI by initializing size checklist and the list view full of current coffee orders.
+	 @param arg0 used to resolve relative paths for the root object, or null if the location is not known.
+	        arg1 used to localize the root object, or null if the root object was not localized.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ToggleGroup tg = new ToggleGroup();
@@ -63,6 +80,12 @@ public class coffeeController implements Initializable {
 		addToListView();
 
 	}
+	
+	/**
+	 Forces the amount field box to contain only numbers in it.
+	 Any non-number entered will be deleted immediately.
+	 @param event A type event into the amount field.
+	 */
 	public void numbersOnly(InputEvent event) {
 		String text = (amountField.getText());
 		String newText = "";
@@ -90,15 +113,27 @@ public class coffeeController implements Initializable {
 		}
 		
 	}
+	
+	/**
+	 Checks if the number on the amount line is a number value.
+	 @param str The number entered on the quantity line.
+	 @return true if the line is a valie number, false if it is not a number or negative.
+	 */
 	public static boolean isNumeric(String str) { 
 		  try {  
 		    Double.parseDouble(str);  
 		    return true;
 		  } catch(NumberFormatException e){  
-			  System.out.println("error");
 		    return false;  
 		  }  
 		}
+	
+	/**
+	 Performs a specific action based on the checkboxes filled.
+	 Calculates the prices correctly and checks if there are any unfilled necessary boxes.
+	 Capable of throwing errors for not selecting a size. If the amount field textbox was not filled, it is assumed to be 1.
+	 @param event A mouse click on the "Submit Order" button.
+	 */
 	public void actionDone(ActionEvent event) {
 		String size = "";
 		errorField.setStyle("-fx-text-fill: green ;");
@@ -174,6 +209,11 @@ public class coffeeController implements Initializable {
 			resetSizeChecks();
 		}
 	}
+	
+	/**
+	 Adds the coffee order into the list of coffee orders made so far.
+	 Can be edited to change the order or be removed before going to the basket to confirm the order.
+	 */
 	public void addToListView() {
 		coffeeOrdersListView.getItems().clear();
 		double subTotal = 0;
@@ -204,6 +244,14 @@ public class coffeeController implements Initializable {
 		
 
 	}
+	
+	/**
+	 Edit the selected order and change various fields before submitting it again.
+	 @param size The size of the coffee.
+	        amount The amount of coffees of these specific parameters desired.
+	        addins The addins for this specific coffee.
+	        price The current price for this coffee order.
+	 */
 	private void setEdit(String size,int amount,ArrayList<String> addins,double price) {
 		switch(size) {
 			case "Small":
@@ -237,15 +285,23 @@ public class coffeeController implements Initializable {
 			}
 		}
 		subtotalLabel.setText(format.format(price));
-		System.out.println(String.valueOf(amount));
 		amountField.setText(String.valueOf(amount));
 	}
+	
+	/**
+	 Checks if any of the size boxes were selected or not.
+	 @return True if any of them have been selected, false otherwise.
+	 */
 	public boolean checkForSize() {
 		if(!smallCheck.isSelected() && !tallCheck.isSelected() && !grandeCheck.isSelected() && !ventiCheck.isSelected()) {
 			return false;
 		}
 		return true;
 	}
+	
+	/**
+	 Resets the addin selections after processing a coffee order.
+	 */
 	public void resetAddChecks() {
 		creamCheck.setSelected(false);
 		syrupCheck.setSelected(false);
@@ -253,6 +309,10 @@ public class coffeeController implements Initializable {
 		caramelCheck.setSelected(false);
 		whippedCheck.setSelected(false);
 	}
+	
+	/**
+	 Resets the size selection after processing a coffee order.
+	 */
 	public void resetSizeChecks() {
 		smallCheck.setSelected(false);
 		tallCheck.setSelected(false);

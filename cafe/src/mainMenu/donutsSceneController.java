@@ -23,6 +23,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ The donutsSceneController class handles the main functionalities in ordering and customizing a donut.
+ Randomizes the available flavors in the store and handles the ordering of either cake donuts, yeast donuts,
+ or donut holes for an order and can handle different amounts.
+ @author Jah C. Speed, Abe Vitangcol
+ */
 public class donutsSceneController implements Initializable{
 	@FXML
 	private Button backToMain,confirmOrder;
@@ -45,6 +51,12 @@ public class donutsSceneController implements Initializable{
 	private final int MAX_FLAVORS = 5;
 	private static ArrayList<String> flavorsOfTheDay;
 	private int amount;
+	
+	/**
+	 Initializes the GUI by initializing the randomized flavors of the day, setting print areas to blank, and the list view full of donut orders.
+	 @param arg0 used to resolve relative paths for the root object, or null if the location is not known.
+	        arg1 used to localize the root object, or null if the root object was not localized.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		donutTypesComboBox.getItems().addAll(donutTypes);
@@ -55,12 +67,23 @@ public class donutsSceneController implements Initializable{
 		printArea.setStyle("-fx-text-fill: green ;");
 		addToListView();
 	}
+	
+	/**
+	 Swaps the current scene back to the main menu in order to do other actions.
+	 @param event A mouse click on the "Main Menu" button.
+	 */
 	public void swapToMainMenuScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();
 	}
+	
+	/**
+	 Confirms the order to add it to the basket to be checked out.
+	 Correctly compiles the clicked and customized areas to have a donut order.
+	 @param event A mouse click on the "Confirm" button.
+	 */
 	public void confirmOrder(ActionEvent event) {
 		String type = donutTypesComboBox.getValue();
 		String flavor = donutFlavorComboBox.getValue();
@@ -85,11 +108,20 @@ public class donutsSceneController implements Initializable{
 		addToListView();
 		reset();
 	}
+	
+	/**
+	 Resets all the changeable fields back to normal after processing an order.
+	 */
 	public void reset() {
 		this.amountField.clear();
 		this.donutTypesComboBox.valueProperty().set(null);
 		this.donutFlavorComboBox.valueProperty().set(null);
 	}
+	
+	/**
+	 Adds the donut order into the list of donut orders made so far.
+	 Can be edited to change the order or be removed before going to the basket to confirm the order.
+	 */
 	public void addToListView() {
 		DecimalFormat format = new DecimalFormat("$###,##0.00");
 		donutOrdersListView.getItems().clear();
@@ -117,22 +149,31 @@ public class donutsSceneController implements Initializable{
 			subTotal+= e.itemPrice();
 		}
 		subtotalLabel.setText("Subtotal: " + format.format(subTotal));
-
-
-		
 	}
+	
+	/**
+	 Edit the selected order and change various fields before submitting it again.
+	 @param donutType The type of donut selected of the specific order.
+	        flavor The flavor of the donut of the specific order.
+	        amount The amount of donuts desired as specified on the order.
+	 */
 	private void setEdit(String donutType, String flavor, int amount) {
 		this.amountField.setText(String.valueOf(amount));
 		this.donutTypesComboBox.valueProperty().set(donutType);
 		this.donutFlavorComboBox.valueProperty().set(flavor);
 		
 	}
+	
+	/**
+	 Checks if the amount field is a valid number.
+	 @return -1 if the number is less than or equal to 0 or not a number, 0 otherwise.
+	 */
 	private int checkAmount() {
 		try {
 			this.amount = Integer.parseInt(amountField.getText());
 			if(this.amount <= 0) {
 				printArea.setStyle("-fx-text-fill: red ;");
-				this.printArea.setText("Amount can not be less than or equa to 0!");
+				this.printArea.setText("Amount can not be less than or equal to 0!");
 				return -1;
 			}
 		}catch(NumberFormatException e) {
@@ -143,6 +184,11 @@ public class donutsSceneController implements Initializable{
 		
 		return 0;
 	}
+	
+	/**
+	 Checks if a donut type was selected in the order process.
+	 @return -1 if the donut type was not selected, 0 otherwise.
+	 */
 	private int checkDonutType() {
 		if(donutTypesComboBox.getValue() == null) {
 			printArea.setStyle("-fx-text-fill: red ;");
@@ -152,6 +198,11 @@ public class donutsSceneController implements Initializable{
 		
 		return 0;
 	}
+	
+	/**
+	 Checks if the donut flavor was selected in the order process.
+	 @return -1 if the donut flavor was not selected, 0 otherwise.
+	 */
 	private int checkDonutFlavor() {
 		if(donutFlavorComboBox.getValue() == null) {
 			printArea.setStyle("-fx-text-fill: red ;");
@@ -161,6 +212,14 @@ public class donutsSceneController implements Initializable{
 		
 		return 0;
 	}
+	
+	/**
+	 Gets a random number of flavors to put into the flavors menu.
+	 The flavor numbers are as defined at the top as MIN_FLAVORS and MAX_FLAVORS
+	 @param list The list of flavors possible.
+	        pullItems The number of flavors to pull from the list.
+	 @return The list of random flavors the menu will have.
+	 */
 	public ArrayList<String>getRandomFlavors(String[]list, int pullItems){
         Random rand = new Random();
         ArrayList<String> newList = new ArrayList<String>();
@@ -174,6 +233,13 @@ public class donutsSceneController implements Initializable{
         }
         return newList;
     }
+	
+	/**
+	 Generates a random integer value from a stated range.
+	 @param min The minimum value of the range.
+	        max The maximum value of the range.
+	 @return The random integer generated.
+	 */
 	public int randomIntFromInterval(int min, int max) {
 		  return (int) Math.floor(Math.random() * (max - min + 1) + min);
 	}

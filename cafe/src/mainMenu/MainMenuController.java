@@ -19,6 +19,12 @@ import orders.Order;
 import orders.OrderNumbers;
 import orders.StoreOrder;
 
+/**
+ The MainMenuController class handles all the functionalities seen on main menu user interface.
+ It is able to open and switch to a different scene depending on the action and holds information
+ about the current orders made. 
+ @author Jah C. Speed, Abe Vitangcol
+ */
 public class MainMenuController implements Initializable {
 	@FXML
 	private Button orderDonutsBtn;
@@ -36,30 +42,56 @@ public class MainMenuController implements Initializable {
 	public static StoreOrder storeOrders;
 	private final String DONUT_PIC = String.valueOf(getClass().getResource("donuts.png"));
 	private final String COFEE_PIC = String.valueOf(getClass().getResource("coffee.jpeg"));
+	
+	/**
+	 Opens a new scene to keep the main menu open and to do donut-related actions.
+	 @param event A button click to change to the donut scene.
+	 */
 	public void swapToDonutScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("donutsScene.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
+	
+	/**
+	 Opens a new scene to keep the main menu open and to do storeOrder-related actions.
+	 @param event A button click to change to the storeOrder scene.
+	 */
 	public void swapToStoreOrderScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("storeOrders.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
+	
+	/**
+	 Opens a new scene to keep the main menu open and to do coffee-related actions.
+	 @param event A button click to change to the coffee scene.
+	 */
 	public void swapToCoffeeScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("coffeeScene.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
+	
+	/**
+	 Opens a new scene to keep the main menu open and to do basket-related actions.
+	 @param event A button click to change to the basket scene.
+	 */
 	public void swapToOrderScene(ActionEvent event) throws IOException {
 		Pane root = (Pane)FXMLLoader.load(getClass().getResource("basketScene.fxml"));
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();	
 	}
+	
+	/**
+	 Initializes the GUI by initializing the current order list, the list of store orders, and adds images to the GUI.
+	 @param arg0 used to resolve relative paths for the root object, or null if the location is not known.
+	        arg1 used to localize the root object, or null if the root object was not localized.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if(currentOrder == null)
@@ -72,6 +104,10 @@ public class MainMenuController implements Initializable {
 		coffeeImageView.setImage(cartImage);
 		
 	}
+	
+	/**
+	 Resets the current order list in the basket after submitting an order.
+	 */
 	public static void resetOrder() {
 		currentOrder = new Order(OrderNumbers.getOrderNumber());
 	}
